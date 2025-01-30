@@ -8,6 +8,11 @@ import { cn } from '@/lib/utils'
 import config from '@/lib/config'
 import { toast } from '@/hooks/use-toast'
 
+const baseURL =
+	config.env.nodeEnv === 'development'
+		? config.env.apiEndpoint
+		: config.env.prodApiEndpoint
+
 const {
 	env: {
 		imagekit: { publicKey, urlEndpoint },
@@ -16,7 +21,7 @@ const {
 
 const authenticator = async () => {
 	try {
-		const response = await fetch(`${config.env.apiEndpoint}/api/imagekit`)
+		const response = await fetch(`${baseURL}/api/imagekit`)
 
 		if (!response.ok) {
 			const errorText = await response.text()

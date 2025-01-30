@@ -12,6 +12,11 @@ import { workflowClient } from '@/lib/workflow'
 import { db } from '@/database/drizzle'
 import { users } from '@/database/schema'
 
+const baseURL =
+	config.env.nodeEnv === 'development'
+		? config.env.apiEndpoint
+		: config.env.prodApiEndpoint
+
 export const signUp = async (params: AuthCredentials) => {
 	const { fullName, email, universityId, password, universityCard } = params
 
@@ -42,7 +47,7 @@ export const signUp = async (params: AuthCredentials) => {
 		})
 
 		await workflowClient.trigger({
-			url: `${config.env.apiEndpoint}/api/workflows/onboarding`,
+			url: `${baseURL}/api/workflows/onboarding`,
 			body: {
 				email,
 				fullName,
